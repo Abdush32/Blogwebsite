@@ -1,26 +1,57 @@
 import React, { Component } from "react";
-import { imageupload } from "../api/register";
+import axios from "axios";
+import { Spinner } from "reactstrap";
+import { createuser } from "../api/register";
 
 class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
-      image: null,
+      selectedFile: null,
+      imagepath: null,
+      loader: false,
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      mobile: "",
+      profile_pic_path: "",
     };
   }
 
-  handleChange = (event) => {
-    this.setState({ image: event.target.files[0]});
+  handleChange = (e) => {
+    const value = e.target.value;
+    this.setState({
+      ...this.state,
+      [e.target.name]: value,
+    });
   };
 
-  handleSubmit = () => {
-    imageupload().then((res) =>{
+  onFileChange = async (e) => {
+    // Update the state
+    e.preventDefault();
+    await this.setState({ selectedFile: e.target.files[0] });
+    const formData = new FormData();
+    await formData.append("profile_pic", this.state.selectedFile);
+    console.log(this.state.selectedFile);
+    this.setState({ loader: true });
+    await axios
+      .post(
+        "https://blogmitiz.readandfeel.in/api/v1/auth/upload_profile_pic",
+        formData
+      )
+      .then((res) => {
+        this.setState({ loader: false });
+        this.setState({ imagepath: res.data.image_full_path, profile_pic_path: res.data.image_path });
         console.log(res);
-    })
-
-
-
+      });
+  };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+    createuser(this.state).then((res) => {
+      console.log(res);
+    });
   };
 
   render() {
@@ -46,6 +77,9 @@ class Signup extends Component {
                                 type="text"
                                 id="form3Example1c"
                                 class="form-control"
+                                name="name"
+                                value={this.state.name}
+                                onChange={this.handleChange}
                               />
                               <label class="form-label" for="form3Example1c">
                                 Your Name
@@ -60,9 +94,29 @@ class Signup extends Component {
                                 type="email"
                                 id="form3Example3c"
                                 class="form-control"
+                                name="email"
+                                value={this.state.email}
+                                onChange={this.handleChange}
                               />
                               <label class="form-label" for="form3Example3c">
                                 Your Email
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                              <input
+                                type="text"
+                                id="form3Example3c"
+                                class="form-control"
+                                name="mobile"
+                                value={this.state.mobile}
+                                onChange={this.handleChange}
+                              />
+                              <label class="form-label" for="form3Example3c">
+                                Your Mobile
                               </label>
                             </div>
                           </div>
@@ -74,6 +128,9 @@ class Signup extends Component {
                                 type="password"
                                 id="form3Example4c"
                                 class="form-control"
+                                name="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
                               />
                               <label class="form-label" for="form3Example4c">
                                 Password
@@ -88,6 +145,9 @@ class Signup extends Component {
                                 type="password"
                                 id="form3Example4cd"
                                 class="form-control"
+                                name="password_confirmation"
+                                value={this.state.password_confirmation}
+                                onChange={this.handleChange}
                               />
                               <label class="form-label" for="form3Example4cd">
                                 Repeat your password
@@ -97,23 +157,44 @@ class Signup extends Component {
 
                           <div class="form-check d-flex justify-content-center mb-5">
                             <label class="form-label" for="customFile"></label>
-                            <input type="file" class="form-control" id="img" value={this.state.image}
-                        onChange={this.handleChange} />
+                            <input
+                              type="file"
+                              class="form-control"
+                              id="profile_pic"
+                              name="profile_pic"
+                              onChange={this.onFileChange}
+                            />
+                            {/* <button
+                              type="submit"
+                              class="btn btn-success"
+                              onClick={this.onFileUpload}
+                            >
+                              Upload!
+                            </button> */}
                           </div>
 
                           <div>
-                            <img
-                              src="https://iconape.com/wp-content/themes/svvvg/assets/img/freeicons.jpg"
-                              width="200px"
-                              height="200px"
-                              class="img-thumbnail"
-                            />
+                            {!this.state.imagepath ? (
+                              this.state.loader && (
+                                <Spinner
+                                  style={{ width: "1rem", height: "1rem" }}
+                                  children={false}
+                                />
+                              )
+                            ) : (
+                              <img
+                                src={this.state.imagepath}
+                                width="200px"
+                                height="200px"
+                                class="img-thumbnail"
+                              />
+                            )}
                           </div>
 
                           <br />
                           <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                             <button
-                              type="button"
+                              type="submit"
                               class="btn btn-primary btn-lg"
                             >
                               Register

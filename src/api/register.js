@@ -1,16 +1,16 @@
-import axios from "axios";
-const baseUrl = "https://blogmitiz.readandfeel.in/api/v1/upload_profile_pic";
+const baseUrl = "https://blogmitiz.readandfeel.in/api/v1/auth/registers";
 
-export const imageupload = () => {
-  return axios
-    .Post(`${baseUrl}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+export const createuser = (user) => {
+  return fetch(`${baseUrl}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      return response.json(user);
     })
-    .then((res) => {
-        console.log(JSON.stringify(res.data));
-      return res.data;
-    });
+    .catch((err) => console.log(err));
 };
