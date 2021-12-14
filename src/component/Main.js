@@ -37,7 +37,7 @@ class Main extends Component {
       this.setState({
         mainPost: res.data.banner_posts,
         myPost: res.data.posts.data,
-        users:  res.posts.data.user
+        users:  res.data.posts.data.user,
       });
       console.log(this.state.users);
     });
@@ -265,7 +265,7 @@ class Main extends Component {
                           <a href="blog-single.html">
                             <div class="inner">
                               <img
-                                src={ele.post_thumbnail}
+                                src={`https://blogmitiz.readandfeel.in/assets/${ele.post_thumbnail}`}
                                 style={{ width: "729px", height: "400px" }}
                                 alt="post-title"
                               />
@@ -276,9 +276,11 @@ class Main extends Component {
                           <ul class="meta list-inline mb-0">
                             <li class="list-inline-item">
                               <a href="#">
-                                <img src={author} class="author" alt="author" />
+                                <img src={`https://blogmitiz.readandfeel.in/assets/${ele.user.profile_pic}`}
+                                 class="author"  alt="author" style={{width:"50px",height:"50px",borderRadius:"40px"}}/>
                                 {ele.user_name}
                               </a>
+
                             </li>
                             <li class="list-inline-item">
                               {moment(ele.created_at).format("Do MMM YY")}
