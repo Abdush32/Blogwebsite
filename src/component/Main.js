@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./style.css";
+import moment from "moment";
 import logo from "../images/logo.svg";
 import wave from "../images/wave.svg";
 import ads from "../images/ads/ad-360.png";
@@ -18,9 +19,32 @@ import postlg1 from "../images/posts/post-lg-2.jpg";
 import cro from "../images/widgets/widget-carousel-1.jpg";
 import tabs1 from "../images/posts/tabs-1.jpg";
 import { Link } from "react-router-dom";
-
+import { Carousel } from "react-bootstrap";
+import { gethomePost } from "../api/postApi";
 class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mainPost: [],
+      myPost: [],
+      users:[]
+    };
+  }
+
+  componentDidMount = () => {
+    gethomePost().then((res) => {
+      console.log(res);
+      this.setState({
+        mainPost: res.data.banner_posts,
+        myPost: res.data.posts.data,
+        users:  res.posts.data.user
+      });
+      console.log(this.state.users);
+    });
+  };
+
   render() {
+    let storedata = JSON.parse(localStorage.getItem("data"));
     return (
       <div>
         <div class="site-wrapper">
@@ -37,7 +61,10 @@ class Main extends Component {
                   </div>
 
                   <div class="col-md-8 d-none d-md-block">
-                    <ul class="social-icons list-unstyled list-inline mb-0 float-end" style={{display:"flex",justifyContent:"end"}}>
+                    <ul
+                      class="social-icons list-unstyled list-inline mb-0 float-end"
+                      style={{ display: "flex", justifyContent: "end" }}
+                    >
                       <li class="list-inline-item">
                         <a href="#">
                           <i class="fab fa-facebook-f"></i>
@@ -164,12 +191,11 @@ class Main extends Component {
                         </li>
                         <Link to="/Signin" class="nav-item">
                           <a class="nav-link" href="#">
-                           Login
+                            Login
                           </a>
                         </Link>
                       </ul>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -184,24 +210,33 @@ class Main extends Component {
                     <a href="category.html" class="category-badge lg">
                       Lifestyle
                     </a>
-                    <h4 class="post-title">
-                      <a href="blog-single.html">
-                        9 Most Awesome Blue Lake With Snow Mountain
-                      </a>
-                    </h4>
-                    <ul class="meta list-inline mb-0">
-                      <li class="list-inline-item">
-                        <a href="#">Katen Doe</a>
-                      </li>
-                      <li class="list-inline-item">29 March 2021</li>
-                    </ul>
                   </div>
-                  <a href="blog-single.html">
+                  <a href="#">
                     <div class="thumb rounded">
-                      <div
-                        class="inner data-bg-image"
-                        data-bg-image="images/posts/featured-xl-1.jpg"
-                      ></div>
+                      <Carousel>
+                        {this.state.mainPost.length > 0 &&
+                          this.state.mainPost.map((ele, index) => (
+                            <Carousel.Item key={index}>
+                              <img
+                                className="d-block w-100"
+                                src={ele.post_thumbnail}
+                                alt="First slide"
+                                style={{
+                                  height: "500px",
+                                  borderRadius: "15px",
+                                }}
+                              />
+                              <Carousel.Caption>
+                                <h3 class="textone">{ele.post_title}</h3>
+                                <h5>{ele.category_title}</h5>
+                                <p>
+                                  {ele.user_name}.&nbsp;&nbsp;
+                                  {moment(ele.created_at).format("Do MMM YY")}
+                                </p>
+                              </Carousel.Caption>
+                            </Carousel.Item>
+                          ))}
+                      </Carousel>
                     </div>
                   </a>
                 </div>
@@ -213,96 +248,105 @@ class Main extends Component {
             <div class="container-xl">
               <div class="row gy-4">
                 <div class="col-lg-8">
-                  <div class="post post-classic rounded bordered">
-                    <div class="thumb top-rounded">
-                      <a
-                        href="category.html"
-                        class="category-badge lg position-absolute"
-                      >
-                        Lifestyle
-                      </a>
-                      <span class="post-format">
-                        <i class="icon-picture"></i>
-                      </span>
-                      <a href="blog-single.html">
-                        <div class="inner">
-                          <img src={postlg1} alt="post-title" />
-                        </div>
-                      </a>
-                    </div>
-                    <div class="details">
-                      <ul class="meta list-inline mb-0">
-                        <li class="list-inline-item">
-                          <a href="#">
-                            <img src={author} class="author" alt="author" />
-                            Katen Doe
+                  {this.state.myPost.length > 0 &&
+                    this.state.myPost.map((ele, index) => (
+                      <div class="post post-classic rounded bordered" key={index}>
+                        <div class="thumb top-rounded">
+                          <a
+                            href="category.html"
+                            class="category-badge lg position-absolute"
+                          >
+                            Lifestyle
                           </a>
-                        </li>
-                        <li class="list-inline-item">29 March 2021</li>
-                        <li class="list-inline-item">
-                          <i class="icon-bubble"></i> (0)
-                        </li>
-                      </ul>
-                      <h5 class="post-title mb-3 mt-3">
-                        <a href="blog-single.html">
-                          How To Become Better With Building In 1 Month
-                        </a>
-                      </h5>
-                      <p class="excerpt mb-0">
-                        Far far away, behind the word mountains, far from the
-                        countries Vokalia and Consonantia, there live the blind
-                        texts. Separated they live in Bookmarksgrove right at
-                        the coast of the Semantics, a large language ocean.
-                      </p>
-                    </div>
-                    <div class="post-bottom clearfix d-flex align-items-center">
-                      <div class="social-share me-auto">
-                        <button class="toggle-button icon-share"></button>
-                        <ul class="icons list-unstyled list-inline mb-0">
-                          <li class="list-inline-item">
-                            <a href="#">
-                              <i class="fab fa-facebook-f"></i>
+                          <span class="post-format">
+                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                          </span>
+
+                          <a href="blog-single.html">
+                            <div class="inner">
+                              <img
+                                src={ele.post_thumbnail}
+                                style={{ width: "729px", height: "400px" }}
+                                alt="post-title"
+                              />
+                            </div>
+                          </a>
+                        </div>
+                        <div class="details">
+                          <ul class="meta list-inline mb-0">
+                            <li class="list-inline-item">
+                              <a href="#">
+                                <img src={author} class="author" alt="author" />
+                                {ele.user_name}
+                              </a>
+                            </li>
+                            <li class="list-inline-item">
+                              {moment(ele.created_at).format("Do MMM YY")}
+                            </li>
+                            <li class="list-inline-item">
+                              <i class="far fa-comment"></i> (0)
+                            </li>
+                          </ul>
+                          <h5 class="post-title mb-3 mt-3">
+                            <a href="blog-single.html">{ele.post_title}</a>
+                          </h5>
+                          <p class="excerpt mb-0">
+                            Far far away, behind the word mountains, far from
+                            the countries Vokalia and Consonantia, there live
+                            the blind texts. Separated they live in
+                            Bookmarksgrove right at the coast of the Semantics,
+                            a large language ocean.
+                          </p>
+                        </div>
+                        <div class="post-bottom clearfix d-flex align-items-center">
+                          <div class="social-share me-auto">
+                            <button class="toggle-button icon-share"></button>
+                            <ul class="icons list-unstyled list-inline mb-0">
+                              <li class="list-inline-item">
+                                <a href="#">
+                                  <i class="fab fa-facebook-f"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item">
+                                <a href="#">
+                                  <i class="fab fa-twitter"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item">
+                                <a href="#">
+                                  <i class="fab fa-linkedin-in"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item">
+                                <a href="#">
+                                  <i class="fab fa-pinterest"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item">
+                                <a href="#">
+                                  <i class="fab fa-telegram-plane"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item">
+                                <a href="#">
+                                  <i class="far fa-envelope"></i>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="float-end d-none d-md-block">
+                            <a href="blog-single.html" class="more-link">
+                              Continue reading<i class="icon-arrow-right"></i>
                             </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#">
-                              <i class="fab fa-twitter"></i>
+                          </div>
+                          <div className="more-button d-block d-md-none float-end">
+                            <a href="blog-single.html">
+                              <span class="icon-options"></span>
                             </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#">
-                              <i class="fab fa-linkedin-in"></i>
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#">
-                              <i class="fab fa-pinterest"></i>
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#">
-                              <i class="fab fa-telegram-plane"></i>
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#">
-                              <i class="far fa-envelope"></i>
-                            </a>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
                       </div>
-                      <div class="float-end d-none d-md-block">
-                        <a href="blog-single.html" class="more-link">
-                          Continue reading<i class="icon-arrow-right"></i>
-                        </a>
-                      </div>
-                      <div class="more-button d-block d-md-none float-end">
-                        <a href="blog-single.html">
-                          <span class="icon-options"></span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                    ))}
 
                   <nav>
                     <ul class="pagination justify-content-center">

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Spinner } from "reactstrap";
+import { FormFeedback, Spinner } from "reactstrap";
 import { createuser } from "../api/register";
 
 class Signup extends Component {
@@ -42,7 +42,10 @@ class Signup extends Component {
       )
       .then((res) => {
         this.setState({ loader: false });
-        this.setState({ imagepath: res.data.image_full_path, profile_pic_path: res.data.image_path });
+        this.setState({
+          imagepath: res.data.image_full_path,
+          profile_pic_path: res.data.image_path,
+        });
         console.log(res);
       });
   };
@@ -53,6 +56,17 @@ class Signup extends Component {
       console.log(res);
     });
   };
+
+  handleValidation = () => {
+    let name = this.state.name;
+    let errors = {};
+    let formIsValid = true;
+    if (!name["name"]) {
+      formIsValid = false;
+      errors["name"] = "Legal Name can not be empty!";
+    }}
+
+
 
   render() {
     return (
@@ -80,7 +94,9 @@ class Signup extends Component {
                                 name="name"
                                 value={this.state.name}
                                 onChange={this.handleChange}
+                                required="required"
                               />
+                            
                               <label class="form-label" for="form3Example1c">
                                 Your Name
                               </label>
@@ -97,6 +113,7 @@ class Signup extends Component {
                                 name="email"
                                 value={this.state.email}
                                 onChange={this.handleChange}
+                                required="required"
                               />
                               <label class="form-label" for="form3Example3c">
                                 Your Email
@@ -114,6 +131,7 @@ class Signup extends Component {
                                 name="mobile"
                                 value={this.state.mobile}
                                 onChange={this.handleChange}
+                                required="required"
                               />
                               <label class="form-label" for="form3Example3c">
                                 Your Mobile
@@ -131,6 +149,7 @@ class Signup extends Component {
                                 name="password"
                                 value={this.state.password}
                                 onChange={this.handleChange}
+                                required="required"
                               />
                               <label class="form-label" for="form3Example4c">
                                 Password
@@ -148,6 +167,7 @@ class Signup extends Component {
                                 name="password_confirmation"
                                 value={this.state.password_confirmation}
                                 onChange={this.handleChange}
+                                required="required"
                               />
                               <label class="form-label" for="form3Example4cd">
                                 Repeat your password
@@ -163,14 +183,8 @@ class Signup extends Component {
                               id="profile_pic"
                               name="profile_pic"
                               onChange={this.onFileChange}
+                              required="required"
                             />
-                            {/* <button
-                              type="submit"
-                              class="btn btn-success"
-                              onClick={this.onFileUpload}
-                            >
-                              Upload!
-                            </button> */}
                           </div>
 
                           <div>
@@ -187,6 +201,7 @@ class Signup extends Component {
                                 width="200px"
                                 height="200px"
                                 class="img-thumbnail"
+                                required="required"
                               />
                             )}
                           </div>
