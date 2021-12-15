@@ -27,19 +27,24 @@ class Main extends Component {
     this.state = {
       mainPost: [],
       myPost: [],
-      users:[]
+      users:[],
+      currentPage:1,
+      totalPage:null
     };
   }
 
   componentDidMount = () => {
     gethomePost().then((res) => {
       console.log(res);
-      this.setState({
-        mainPost: res.data.banner_posts,
-        myPost: res.data.posts.data,
-        users:  res.data.posts.data.user,
-      });
-      console.log(this.state.users);
+const pageNo = Math.ceil(res.data.posts.total/res.data.posts.per_page);
+this.setState({
+  mainPost: res.data.banner_posts,
+  myPost: res.data.posts.data,
+  users:  res.data.posts.data.user,
+  pageNo:pageNo
+});
+console.log(pageNo);
+     
     });
   };
 
