@@ -30,8 +30,9 @@ class Main extends Component {
       myPost: [],
       users: [],
       categories: [],
-      popularPost:[],
-      hashtags:[],
+      popularPost: [],
+      hashtags: [],
+      celebration_posts: [],
       currentPage: 1,
       totalPage: null,
       loader: true,
@@ -49,7 +50,8 @@ class Main extends Component {
         users: res.data.posts.data.user,
         categories: res.data.categories,
         popularPost: res.data.popular_posts,
-        hashtags:res.data.hashtags,
+        celebration_posts: res.data.celebration_posts,
+        hashtags: res.data.hashtags,
         totalPage: pageNo,
       });
 
@@ -78,7 +80,6 @@ class Main extends Component {
     console.log("loder pages");
     this.setState({ currentPage: this.state.currentPage + 1 });
   };
-
   createElements(number) {
     var elements = [];
     for (var i = 1; i <= number; i++) {
@@ -337,7 +338,7 @@ class Main extends Component {
                               href="category.html"
                               class="category-badge lg position-absolute"
                             >
-                            {ele.category_title}
+                              {ele.category.cat_title}
                             </a>
                             <span class="post-format">
                               <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -511,37 +512,36 @@ class Main extends Component {
                         <h3 class="widget-title">Popular Posts</h3>
                         <img src={wave} class="wave" alt="wave" />
                       </div>
-                   {this.state.popularPost.length > 0 &&
-                   this.state.popularPost.map((ele,index)=>(
-
-                   
-                    
-                      <div class="widget-content mb-3" key={index}>
-                        <div class="post post-list-sm circle">
-                          <div class="thumb circle">
-                           
-                            <a href="blog-single.html">
-                              <div class="inner">
-                                <img src={ele.post_thumbnail} alt="post-title" style={{width:"70px",height:"60px"}} />
+                      {this.state.popularPost.length > 0 &&
+                        this.state.popularPost.map((ele, index) => (
+                          <div class="widget-content mb-3" key={index}>
+                            <div class="post post-list-sm circle">
+                              <div class="thumb circle">
+                                <a href="blog-single.html">
+                                  <div class="inner">
+                                    <img
+                                      src={ele.post_thumbnail}
+                                      alt="post-title"
+                                      style={{ width: "70px", height: "60px" }}
+                                    />
+                                  </div>
+                                </a>
                               </div>
-                            </a>
+                              <div class="details clearfix">
+                                <h6 class="post-title my-0">
+                                  <a href="blog-single.html">
+                                    {ele.post_title}
+                                  </a>
+                                </h6>
+                                <ul class="meta list-inline mt-1 mb-0">
+                                  <li class="list-inline-item">
+                                    {moment(ele.created_at).format("Do MMM YY")}
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
                           </div>
-                          <div class="details clearfix">
-                            <h6 class="post-title my-0">
-                              <a href="blog-single.html">
-                               {ele.post_title}
-                              </a>
-                            </h6>
-                            <ul class="meta list-inline mt-1 mb-0">
-                              <li class="list-inline-item">{moment(ele.created_at).format("Do MMM YY")}</li>
-                            </ul>
-                          </div>
-                        </div>
-                    
-                      </div>
-                  ))}
-
-
+                        ))}
                     </div>
                     <div class="widget rounded">
                       <div class="widget-header text-center">
@@ -597,59 +597,44 @@ class Main extends Component {
                       </div>
                       <div class="widget-content">
                         <div class="post-carousel-widget">
-                          <div class="post post-carousel">
-                            <div class="thumb rounded">
-                              <a
-                                href="category.html"
-                                class="category-badge position-absolute"
-                              >
-                                How to
-                              </a>
-                              <a href="blog-single.html">
-                                <div class="inner">
-                                  <img src={cro} alt="post-title" />
+                          {this.state.celebration_posts.length > 0 &&
+                            this.state.celebration_posts.map((ele, index) => (
+                              <div class="post post-carousel" key={index}>
+                                <div class="thumb rounded">
+                                  <a
+                                    href="category.html"
+                                    class="category-badge position-absolute"
+                                  >
+                                    {ele.category_title}
+                                  </a>
+                                  <a href="blog-single.html">
+                                    <div class="inner">
+                                      <img
+                                        src={ele.post_thumbnail}
+                                        alt="post-title"
+                                        style={{
+                                          width: "300px",
+                                          height: "150px",
+                                        }}
+                                      />
+                                    </div>
+                                  </a>
                                 </div>
-                              </a>
-                            </div>
-                            <h5 class="post-title mb-0 mt-4">
-                              <a href="blog-single.html">
-                                5 Easy Ways You Can Turn Future Into Success
-                              </a>
-                            </h5>
-                            <ul class="meta list-inline mt-2 mb-0">
-                              <li class="list-inline-item">
-                                <a href="#">Katen Doe</a>
-                              </li>
-                              <li class="list-inline-item">29 March 2021</li>
-                            </ul>
-                          </div>
-
-                          <div class="post post-carousel">
-                            <div class="thumb rounded">
-                              <a
-                                href="category.html"
-                                class="category-badge position-absolute"
-                              >
-                                How to
-                              </a>
-                              <a href="blog-single.html">
-                                <div class="inner">
-                                  <img src={cro} alt="post-title" />
-                                </div>
-                              </a>
-                            </div>
-                            <h5 class="post-title mb-0 mt-4">
-                              <a href="blog-single.html">
-                                5 Easy Ways You Can Turn Future Into Success
-                              </a>
-                            </h5>
-                            <ul class="meta list-inline mt-2 mb-0">
-                              <li class="list-inline-item">
-                                <a href="#">Katen Doe</a>
-                              </li>
-                              <li class="list-inline-item">29 March 2021</li>
-                            </ul>
-                          </div>
+                                <h5 class="post-title mb-0 mt-4">
+                                  <a href="blog-single.html">
+                                    {ele.post_title}
+                                  </a>
+                                </h5>
+                                <ul class="meta list-inline mt-2 mb-0">
+                                  <li class="list-inline-item">
+                                    <a href="#">{ele.user_name}</a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    {moment(ele.created_at).format("Do MMM YY")}{" "}
+                                  </li>
+                                </ul>
+                              </div>
+                            ))}
                         </div>
 
                         <div class="slick-arrows-bot">
@@ -683,17 +668,14 @@ class Main extends Component {
                         <h3 class="widget-title">Tag Clouds</h3>
                         <img src={wave} class="wave" alt="wave" />
                       </div>
-                      {this.state.hashtags.length > 0 && 
-                      this.state.hashtags.map((ele,index)=>(
-
-                     
-                      <div class="widget-content" key={index}>
-                        <a href="#" class="tag">
-                          #{ele.hashtag}
-                        </a>
-                      
-                      </div>
-                       ))}
+                      {this.state.hashtags.length > 0 &&
+                        this.state.hashtags.map((ele, index) => (
+                          <div class="widget-content" key={index}>
+                            <a href="#" class="tag">
+                              #{ele.hashtag}
+                            </a>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
