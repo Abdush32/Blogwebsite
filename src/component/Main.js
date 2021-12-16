@@ -21,32 +21,87 @@ import tabs1 from "../images/posts/tabs-1.jpg";
 import { Link } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import { gethomePost } from "../api/postApi";
+import { Spinner } from "reactstrap";
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mainPost: [],
       myPost: [],
-      users:[],
-      currentPage:1,
-      totalPage:null
+      users: [],
+      categories: [],
+      popularPost:[],
+      hashtags:[],
+      currentPage: 1,
+      totalPage: null,
+      loader: true,
     };
   }
 
   componentDidMount = () => {
     gethomePost().then((res) => {
       console.log(res);
-const pageNo = Math.ceil(res.data.posts.total/res.data.posts.per_page);
-this.setState({
-  mainPost: res.data.banner_posts,
-  myPost: res.data.posts.data,
-  users:  res.data.posts.data.user,
-  pageNo:pageNo
-});
-console.log(pageNo);
-     
+      this.setState({ loader: false });
+      const pageNo = Math.ceil(res.data.posts.total / res.data.posts.per_page);
+      this.setState({
+        mainPost: res.data.banner_posts,
+        myPost: res.data.posts.data,
+        users: res.data.posts.data.user,
+        categories: res.data.categories,
+        popularPost: res.data.popular_posts,
+        hashtags:res.data.hashtags,
+        totalPage: pageNo,
+      });
+
+      console.log(this.state.popularPost);
     });
   };
+
+  componentDidUpdate = (prev, prevState) => {
+    if (prevState.currentPage !== this.state.currentPage) {
+      gethomePost(this.state.currentPage).then((res) => {
+        const pageNo = Math.ceil(
+          res.data.posts.total / res.data.posts.per_page
+        );
+        this.setState({
+          mainPost: res.data.banner_posts,
+          myPost: res.data.posts.data,
+          users: res.data.posts.data.user,
+          currentPage: res.data.posts.current_page,
+          totalPage: pageNo,
+        });
+      });
+    }
+  };
+
+  loadMore = () => {
+    console.log("loder pages");
+    this.setState({ currentPage: this.state.currentPage + 1 });
+  };
+
+  createElements(number) {
+    var elements = [];
+    for (var i = 1; i <= number; i++) {
+      if (this.state.currentPage == i) {
+        elements.push(
+          <li class="page-item active">
+            <a class="page-link" href="#">
+              {i}
+            </a>
+          </li>
+        );
+      } else {
+        elements.push(
+          <li class="page-item">
+            <Link to="#" onClick={this.loadMore} class="page-link" href="#">
+              {i}
+            </Link>
+          </li>
+        );
+      }
+    }
+    return elements;
+  }
 
   render() {
     let storedata = JSON.parse(localStorage.getItem("data"));
@@ -211,37 +266,48 @@ console.log(pageNo);
             <div class="container-xl">
               <div class="post-carousel-lg">
                 <div class="post featured-post-xl">
-                  <div class="details clearfix">
-                    <a href="category.html" class="category-badge lg">
-                      Lifestyle
-                    </a>
-                  </div>
                   <a href="#">
-                    <div class="thumb rounded">
-                      <Carousel>
-                        {this.state.mainPost.length > 0 &&
-                          this.state.mainPost.map((ele, index) => (
-                            <Carousel.Item key={index}>
-                              <img
-                                className="d-block w-100"
-                                src={ele.post_thumbnail}
-                                alt="First slide"
-                                style={{
-                                  height: "500px",
-                                  borderRadius: "15px",
-                                }}
-                              />
-                              <Carousel.Caption>
-                                <h3 class="textone">{ele.post_title}</h3>
-                                <h5>{ele.category_title}</h5>
-                                <p>
-                                  {ele.user_name}.&nbsp;&nbsp;
-                                  {moment(ele.created_at).format("Do MMM YY")}
-                                </p>
-                              </Carousel.Caption>
-                            </Carousel.Item>
-                          ))}
-                      </Carousel>
+                    <div class="thumb rounded" style={{ height: "400px" }}>
+                      {this.state.loader ? (
+                        <Spinner
+                          children={false}
+                          class="spinner1"
+                          style={{ marginLeft: "500px", marginTop: "200px" }}
+                        />
+                      ) : (
+                        <Carousel>
+                          {this.state.mainPost.length > 0 &&
+                            this.state.mainPost.map((ele, index) => (
+                              <Carousel.Item key={index}>
+                                <div class="details clearfix">
+                                  <a
+                                    href="category.html"
+                                    class="category-badge lg"
+                                  >
+                                    {ele.category_title}
+                                  </a>
+                                </div>
+                                <img
+                                  className="d-block w-100"
+                                  src={ele.post_thumbnail}
+                                  alt="First slide"
+                                  style={{
+                                    height: "500px",
+                                    borderRadius: "15px",
+                                  }}
+                                />
+                                <Carousel.Caption>
+                                  <h3 class="textone">{ele.post_title}</h3>
+                                  <h5>{ele.category_title}</h5>
+                                  <p>
+                                    {ele.user_name}.&nbsp;&nbsp;
+                                    {moment(ele.created_at).format("Do MMM YY")}
+                                  </p>
+                                </Carousel.Caption>
+                              </Carousel.Item>
+                            ))}
+                        </Carousel>
+                      )}
                     </div>
                   </a>
                 </div>
@@ -252,112 +318,130 @@ console.log(pageNo);
           <section class="main-content">
             <div class="container-xl">
               <div class="row gy-4">
-                <div class="col-lg-8">
-                  {this.state.myPost.length > 0 &&
-                    this.state.myPost.map((ele, index) => (
-                      <div class="post post-classic rounded bordered" key={index}>
-                        <div class="thumb top-rounded">
-                          <a
-                            href="category.html"
-                            class="category-badge lg position-absolute"
-                          >
-                            Lifestyle
-                          </a>
-                          <span class="post-format">
-                            <i class="fa fa-picture-o" aria-hidden="true"></i>
-                          </span>
+                {this.state.loader ? (
+                  <Spinner
+                    children={false}
+                    class="spinner1"
+                    style={{ marginLeft: "500px" }}
+                  />
+                ) : (
+                  <div class="col-lg-8">
+                    {this.state.myPost.length > 0 &&
+                      this.state.myPost.map((ele, index) => (
+                        <div
+                          class="post post-classic rounded bordered"
+                          key={index}
+                        >
+                          <div class="thumb top-rounded">
+                            <a
+                              href="category.html"
+                              class="category-badge lg position-absolute"
+                            >
+                            {ele.category_title}
+                            </a>
+                            <span class="post-format">
+                              <i class="fa fa-picture-o" aria-hidden="true"></i>
+                            </span>
 
-                          <a href="blog-single.html">
-                            <div class="inner">
-                              <img
-                                src={`https://blogmitiz.readandfeel.in/assets/${ele.post_thumbnail}`}
-                                style={{ width: "729px", height: "400px" }}
-                                alt="post-title"
-                              />
-                            </div>
-                          </a>
-                        </div>
-                        <div class="details">
-                          <ul class="meta list-inline mb-0">
-                            <li class="list-inline-item">
-                              <a href="#">
-                                <img src={`https://blogmitiz.readandfeel.in/assets/${ele.user.profile_pic}`}
-                                 class="author"  alt="author" style={{width:"50px",height:"50px",borderRadius:"40px"}}/>
-                                {ele.user_name}
-                              </a>
-
-                            </li>
-                            <li class="list-inline-item">
-                              {moment(ele.created_at).format("Do MMM YY")}
-                            </li>
-                            <li class="list-inline-item">
-                              <i class="far fa-comment"></i> (0)
-                            </li>
-                          </ul>
-                          <h5 class="post-title mb-3 mt-3">
-                            <a href="blog-single.html">{ele.post_title}</a>
-                          </h5>
-                          <p class="excerpt mb-0">
-                            Far far away, behind the word mountains, far from
-                            the countries Vokalia and Consonantia, there live
-                            the blind texts. Separated they live in
-                            Bookmarksgrove right at the coast of the Semantics,
-                            a large language ocean.
-                          </p>
-                        </div>
-                        <div class="post-bottom clearfix d-flex align-items-center">
-                          <div class="social-share me-auto">
-                            <button class="toggle-button icon-share"></button>
-                            <ul class="icons list-unstyled list-inline mb-0">
+                            <a href="blog-single.html">
+                              <div class="inner">
+                                <img
+                                  src={`https://blogmitiz.readandfeel.in/assets/${ele.post_thumbnail}`}
+                                  style={{ width: "729px", height: "400px" }}
+                                  alt="post-title"
+                                />
+                              </div>
+                            </a>
+                          </div>
+                          <div class="details">
+                            <ul class="meta list-inline mb-0">
                               <li class="list-inline-item">
                                 <a href="#">
-                                  <i class="fab fa-facebook-f"></i>
+                                  <img
+                                    src={`https://blogmitiz.readandfeel.in/assets/${ele.user.profile_pic}`}
+                                    class="author"
+                                    alt="author"
+                                    style={{
+                                      width: "50px",
+                                      height: "50px",
+                                      borderRadius: "40px",
+                                    }}
+                                  />
+                                  {ele.user_name}
                                 </a>
                               </li>
                               <li class="list-inline-item">
-                                <a href="#">
-                                  <i class="fab fa-twitter"></i>
-                                </a>
+                                {moment(ele.created_at).format("Do MMM YY")}
                               </li>
                               <li class="list-inline-item">
-                                <a href="#">
-                                  <i class="fab fa-linkedin-in"></i>
-                                </a>
-                              </li>
-                              <li class="list-inline-item">
-                                <a href="#">
-                                  <i class="fab fa-pinterest"></i>
-                                </a>
-                              </li>
-                              <li class="list-inline-item">
-                                <a href="#">
-                                  <i class="fab fa-telegram-plane"></i>
-                                </a>
-                              </li>
-                              <li class="list-inline-item">
-                                <a href="#">
-                                  <i class="far fa-envelope"></i>
-                                </a>
+                                <i class="far fa-comment"></i> (0)
                               </li>
                             </ul>
+                            <h5 class="post-title mb-3 mt-3">
+                              <a href="blog-single.html">{ele.post_title}</a>
+                            </h5>
+                            <p class="excerpt mb-0">
+                              Far far away, behind the word mountains, far from
+                              the countries Vokalia and Consonantia, there live
+                              the blind texts. Separated they live in
+                              Bookmarksgrove right at the coast of the
+                              Semantics, a large language ocean.
+                            </p>
                           </div>
-                          <div className="float-end d-none d-md-block">
-                            <a href="blog-single.html" class="more-link">
-                              Continue reading<i class="icon-arrow-right"></i>
-                            </a>
-                          </div>
-                          <div className="more-button d-block d-md-none float-end">
-                            <a href="blog-single.html">
-                              <span class="icon-options"></span>
-                            </a>
+                          <div class="post-bottom clearfix d-flex align-items-center">
+                            <div class="social-share me-auto">
+                              <button class="toggle-button icon-share"></button>
+                              <ul class="icons list-unstyled list-inline mb-0">
+                                <li class="list-inline-item">
+                                  <a href="#">
+                                    <i class="fab fa-facebook-f"></i>
+                                  </a>
+                                </li>
+                                <li class="list-inline-item">
+                                  <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                  </a>
+                                </li>
+                                <li class="list-inline-item">
+                                  <a href="#">
+                                    <i class="fab fa-linkedin-in"></i>
+                                  </a>
+                                </li>
+                                <li class="list-inline-item">
+                                  <a href="#">
+                                    <i class="fab fa-pinterest"></i>
+                                  </a>
+                                </li>
+                                <li class="list-inline-item">
+                                  <a href="#">
+                                    <i class="fab fa-telegram-plane"></i>
+                                  </a>
+                                </li>
+                                <li class="list-inline-item">
+                                  <a href="#">
+                                    <i class="far fa-envelope"></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="float-end d-none d-md-block">
+                              <a href="blog-single.html" class="more-link">
+                                Continue reading<i class="icon-arrow-right"></i>
+                              </a>
+                            </div>
+                            <div className="more-button d-block d-md-none float-end">
+                              <a href="blog-single.html">
+                                <span class="icon-options"></span>
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
 
-                  <nav>
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item active" aria-current="page">
+                    <nav>
+                      <ul class="pagination justify-content-center">
+                        {this.createElements(this.state.totalPage)}
+                        {/* <li class="page-item active" aria-current="page">
                         <span class="page-link">1</span>
                       </li>
                       <li class="page-item">
@@ -369,10 +453,12 @@ console.log(pageNo);
                         <a class="page-link" href="#">
                           3
                         </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
+                      </li> */}
+                      </ul>
+                    </nav>
+                  </div>
+                )}
+
                 <div class="col-lg-4">
                   <div class="sidebar">
                     <div class="widget rounded">
@@ -420,113 +506,60 @@ console.log(pageNo);
                         </ul>
                       </div>
                     </div>
-
                     <div class="widget rounded">
                       <div class="widget-header text-center">
                         <h3 class="widget-title">Popular Posts</h3>
                         <img src={wave} class="wave" alt="wave" />
                       </div>
-                      <div class="widget-content">
-                        <div class="post post-list-sm circle">
-                          <div class="thumb circle">
-                            <span class="number">1</span>
-                            <a href="blog-single.html">
-                              <div class="inner">
-                                <img src={tabs1} alt="post-title" />
-                              </div>
-                            </a>
-                          </div>
-                          <div class="details clearfix">
-                            <h6 class="post-title my-0">
-                              <a href="blog-single.html">
-                                3 Easy Ways To Make Your iPhone Faster
-                              </a>
-                            </h6>
-                            <ul class="meta list-inline mt-1 mb-0">
-                              <li class="list-inline-item">29 March 2021</li>
-                            </ul>
-                          </div>
-                        </div>
+                   {this.state.popularPost.length > 0 &&
+                   this.state.popularPost.map((ele,index)=>(
 
+                   
+                    
+                      <div class="widget-content mb-3" key={index}>
                         <div class="post post-list-sm circle">
                           <div class="thumb circle">
-                            <span class="number">2</span>
+                           
                             <a href="blog-single.html">
                               <div class="inner">
-                                <img src={tabs1} alt="post-title" />
+                                <img src={ele.post_thumbnail} alt="post-title" style={{width:"70px",height:"60px"}} />
                               </div>
                             </a>
                           </div>
                           <div class="details clearfix">
                             <h6 class="post-title my-0">
                               <a href="blog-single.html">
-                                An Incredibly Easy Method That Works For All
+                               {ele.post_title}
                               </a>
                             </h6>
                             <ul class="meta list-inline mt-1 mb-0">
-                              <li class="list-inline-item">29 March 2021</li>
+                              <li class="list-inline-item">{moment(ele.created_at).format("Do MMM YY")}</li>
                             </ul>
                           </div>
                         </div>
-
-                        <div class="post post-list-sm circle">
-                          <div class="thumb circle">
-                            <span class="number">3</span>
-                            <a href="blog-single.html">
-                              <div class="inner">
-                                <img src={tabs1} alt="post-title" />
-                              </div>
-                            </a>
-                          </div>
-                          <div class="details clearfix">
-                            <h6 class="post-title my-0">
-                              <a href="blog-single.html">
-                                10 Ways To Immediately Start Selling Furniture
-                              </a>
-                            </h6>
-                            <ul class="meta list-inline mt-1 mb-0">
-                              <li class="list-inline-item">29 March 2021</li>
-                            </ul>
-                          </div>
-                        </div>
+                    
                       </div>
-                    </div>
+                  ))}
 
+
+                    </div>
                     <div class="widget rounded">
                       <div class="widget-header text-center">
-                        <h3 class="widget-title">Explore Topics</h3>
+                        <h3 class="widget-title">Categories</h3>
                         <img src={wave} class="wave" alt="wave" />
                       </div>
                       <div class="widget-content">
-                        <ul class="list">
-                          <li>
-                            <a href="#">Lifestyle</a>
-                            <span>(5)</span>
-                          </li>
-                          <li>
-                            <a href="#">Inspiration</a>
-                            <span>(2)</span>
-                          </li>
-                          <li>
-                            <a href="#">Fashion</a>
-                            <span>(4)</span>
-                          </li>
-                          <li>
-                            <a href="#">Politic</a>
-                            <span>(1)</span>
-                          </li>
-                          <li>
-                            <a href="#">Trending</a>
-                            <span>(7)</span>
-                          </li>
-                          <li>
-                            <a href="#">Culture</a>
-                            <span>(3)</span>
-                          </li>
-                        </ul>
+                        {this.state.categories.length > 0 &&
+                          this.state.categories.map((ele, index) => (
+                            <ul class="list">
+                              <li>
+                                <a href="#">{ele.cat_title}</a>
+                                <span>({ele.total_posts})</span>
+                              </li>
+                            </ul>
+                          ))}
                       </div>
                     </div>
-
                     <div class="widget rounded">
                       <div class="widget-header text-center">
                         <h3 class="widget-title">Newsletter</h3>
@@ -557,7 +590,6 @@ console.log(pageNo);
                         </span>
                       </div>
                     </div>
-
                     <div class="widget rounded">
                       <div class="widget-header text-center">
                         <h3 class="widget-title">Celebration</h3>
@@ -640,36 +672,28 @@ console.log(pageNo);
                         </div>
                       </div>
                     </div>
-
                     <div class="widget no-container rounded text-md-center">
                       <span class="ads-title">- Sponsored Ad -</span>
                       <a href="#" class="widget-ads">
                         <img src={ads} alt="Advertisement" />
                       </a>
                     </div>
-
                     <div class="widget rounded">
                       <div class="widget-header text-center">
                         <h3 class="widget-title">Tag Clouds</h3>
                         <img src={wave} class="wave" alt="wave" />
                       </div>
-                      <div class="widget-content">
+                      {this.state.hashtags.length > 0 && 
+                      this.state.hashtags.map((ele,index)=>(
+
+                     
+                      <div class="widget-content" key={index}>
                         <a href="#" class="tag">
-                          #Trending
+                          #{ele.hashtag}
                         </a>
-                        <a href="#" class="tag">
-                          #Video
-                        </a>
-                        <a href="#" class="tag">
-                          #Featured
-                        </a>
-                        <a href="#" class="tag">
-                          #Gallery
-                        </a>
-                        <a href="#" class="tag">
-                          #Celebrities
-                        </a>
+                      
                       </div>
+                       ))}
                     </div>
                   </div>
                 </div>
