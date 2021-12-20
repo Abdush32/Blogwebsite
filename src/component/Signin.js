@@ -1,7 +1,50 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { login } from "../api/register";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class Signin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+    };
+  }
+
+  handleChange = (e) => {
+    const value = e.target.value;
+    this.setState({ ...this.state, [e.target.name]: value });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+    login(this.state).then((res) => {
+      // console.log(data);
+      if (res.data && res.status) {
+        let userdata = {
+          user_id: res.data.user_id,
+          email: res.data.email,
+          mobile: res.data.mobile,
+          name: res.data.name,
+          profile_pic: res.data.profile_pic,
+          token: res.data.token,
+        };
+
+        localStorage.setItem("data", JSON.stringify(userdata));
+
+        this.props.history.push("/");
+      } else {
+        console.log("NOT");
+        toast.error(res.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    });
+  };
+
   render() {
     return (
       <div>
@@ -17,7 +60,7 @@ class Signin extends Component {
                           Signin
                         </p>
 
-                        <form class="mx-1 mx-md-4">
+                        <form class="mx-1 mx-md-4" onSubmit={this.handleSubmit}>
                           <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                           </div>
@@ -28,7 +71,11 @@ class Signin extends Component {
                               <input
                                 type="email"
                                 id="form3Example3c"
+                                name="email"
                                 class="form-control"
+                                required="required"
+                                value={this.state.email}
+                                onChange={this.handleChange}
                               />
                               <label class="form-label" for="form3Example3c">
                                 Your Email
@@ -42,7 +89,11 @@ class Signin extends Component {
                               <input
                                 type="password"
                                 id="form3Example4c"
+                                name="password"
                                 class="form-control"
+                                required="required"
+                                value={this.state.password}
+                                onChange={this.handleChange}
                               />
                               <label class="form-label" for="form3Example4c">
                                 Password
@@ -53,7 +104,7 @@ class Signin extends Component {
                           <br />
                           <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                             <button
-                              type="button"
+                              type="submit"
                               class="btn btn-primary btn-lg"
                             >
                               Signin
