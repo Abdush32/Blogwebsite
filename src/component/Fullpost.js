@@ -6,6 +6,12 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 
 class Fullpost extends Component {
+  componentDidMount = () => {
+    singlePost_api(this.props.match.params.id).then((res)=>(
+      console.log(res)
+      
+    ))
+  };
   render() {
     return (
       <div>

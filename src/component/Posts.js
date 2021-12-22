@@ -160,6 +160,7 @@ class Posts extends Component {
                             <a href="blog-single.html">{ele.post_title}</a>
                           </h5>
                           <p class="excerpt mb-0">
+                           
                             Far far away, behind the word mountains, far from
                             the countries Vokalia and Consonantia, there live
                             the blind texts. Separated they live in
@@ -205,7 +206,10 @@ class Posts extends Component {
                           </div>
                           <div className="float-end d-none d-md-block">
                             <a href="blog-single.html" class="more-link">
-                              <Link to="/Fullpost"> Continue reading</Link>
+                              <Link to="/Fullpost">
+                                {" "}
+                                Continue reading
+                              </Link>
                               <i class="icon-arrow-right"></i>
                             </a>
                           </div>
@@ -238,7 +242,7 @@ class Posts extends Component {
                   </nav>
                 </div>
               )}
-                <div class="col-lg-4">
+              <div class="col-lg-4">
                 <Sidebar />
               </div>
             </div>

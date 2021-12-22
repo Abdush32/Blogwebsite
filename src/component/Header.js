@@ -15,11 +15,10 @@ import "./style.css";
               <div class="header-top">
                 <div class="row align-items-center">
                   <div class="col-md-4 col-xs-12">
-                    <a class="navbar-brand" href="classic.html">
+                    <Link class="navbar-brand" to="/">
                       <img src={logo} alt="logo" />
-                    </a>
+                    </Link>
                   </div>
-
                   <div class="col-md-8 d-none d-md-block">
                     <ul
                       class="social-icons list-unstyled list-inline mb-0 float-end"
@@ -68,9 +67,9 @@ import "./style.css";
                     <div class="collapse navbar-collapse flex-grow-1">
                       <ul class="navbar-nav">
                         <li class="nav-item dropdown active">
-                          <a class="nav-link dropdown-toggle" href="index.html">
+                          <Link class="nav-link dropdown-toggle" to="/">
                             Home
-                          </a>
+                          </Link>
                           <ul class="dropdown-menu">
                             <li>
                               <a class="dropdown-item" href="index.html">

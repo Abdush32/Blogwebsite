@@ -1,7 +1,7 @@
 import react from "react";
 import "./App.css";
 import Main from "./component/Main";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Signup from "./component/Signup";
 import Signin from "./component/Signin";
@@ -10,22 +10,23 @@ import Crousel from "./component/Crousel";
 import Posts from "./component/Posts";
 import Fullpost from "./component/Fullpost";
 import Feed from "./component/Feed";
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main/>}></Route>
-        <Route path="/Signup" element={<Signup />}></Route>
-        <Route path="/Signin" element={<Signin />}></Route>
-        <Route path="/Header" element={<Header />}></Route>
-        <Route path="/Crousel" element={<Crousel />}></Route>
-        <Route path="/Posts" element={<Posts />}></Route>
-        <Route path="/Fullpost" element={<Fullpost />}></Route>
-        <Route path="/Feed" element={<Feed />}></Route>
+      <Switch>
+        <Route path="/" component={Main}/>
+        <Route path="/Signup" component={Signup }/>
+        <Route path="/Signin" component={Signin }/>
+        <Route path="/Header" component={Header }/>
+        <Route path="/Crousel" component={Crousel }/>
+        <Route path="/Posts" component={Posts}/>
+        <Route path="/Fullpost/:id" component={Fullpost}/>
+        <Route path="/Feed" component={Feed}/>
 
         
-      </Routes>
+      </Switch>
     </BrowserRouter>
   );
 }
