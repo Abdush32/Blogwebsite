@@ -7,7 +7,7 @@ import wave from "../images/wave.svg";
 import ads from "../images/ads/ad-360.png";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
-import Fullpost from "./Fullpost";
+
 import Sidebar from "./Sidebar";
 import Feed from "./Feed";
 import Footer from "./Footer";
@@ -160,7 +160,6 @@ class Posts extends Component {
                             <a href="blog-single.html">{ele.post_title}</a>
                           </h5>
                           <p class="excerpt mb-0">
-                           
                             Far far away, behind the word mountains, far from
                             the countries Vokalia and Consonantia, there live
                             the blind texts. Separated they live in
@@ -205,9 +204,10 @@ class Posts extends Component {
                             </ul>
                           </div>
                           <div className="float-end d-none d-md-block">
-                            <a href="blog-single.html" class="more-link">
-                              <Link to="/Fullpost">
+                            <a href="/Singlepost" class="more-link">
+                              <Link to={`/SinglePost/${ele.id}`}>
                                 {" "}
+                                {/*  */}
                                 Continue reading
                               </Link>
                               <i class="icon-arrow-right"></i>

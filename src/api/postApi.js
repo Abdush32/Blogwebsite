@@ -1,8 +1,8 @@
 const baseUrl = "https://blogmitiz.readandfeel.in/api/v1";
 const baseUrl2 = "https://blogmitiz.readandfeel.in/api/v1/post";
 
-const localdata = JSON.parse(localStorage.getItem("data"));
-const token = localdata.token;
+// const localdata = JSON.parse(localStorage.getItem("data"));
+// const token = localdata.token;
 
 export const gethomePost = (pageno) => {
   console.log();
@@ -11,7 +11,7 @@ export const gethomePost = (pageno) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      // Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(),
   })

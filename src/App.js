@@ -8,24 +8,25 @@ import Signin from "./component/Signin";
 import Header from "./component/Header";
 import Crousel from "./component/Crousel";
 import Posts from "./component/Posts";
-import Fullpost from "./component/Fullpost";
 import Feed from "./component/Feed";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
+import SinglePost from "./component/Singlepost";
+import Singlepost from "./component/Singlepost";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Main}/>
-        <Route path="/Signup" component={Signup }/>
-        <Route path="/Signin" component={Signin }/>
-        <Route path="/Header" component={Header }/>
-        <Route path="/Crousel" component={Crousel }/>
-        <Route path="/Posts" component={Posts}/>
-        <Route path="/Fullpost/:id" component={Fullpost}/>
-        <Route path="/Feed" component={Feed}/>
+        <Route path="/" exact component={Main} />
+        <Route path="/Signup" exact component={Signup} />
+        <Route path="/Signin" exact component={Signin} />
+        <Route path="/Header" exact component={Header} />
+        <Route path="/Crousel" exact component={Crousel} />
+        <Route path="/Posts" exact component={Posts} />
 
-        
+        <Route path="/SinglePost/:id" exact component={Singlepost} />
+
+        <Route path="/Feed" exact component={Feed} />
       </Switch>
     </BrowserRouter>
   );
