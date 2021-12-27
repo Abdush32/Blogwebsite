@@ -38,15 +38,13 @@ class SinglePost extends Component {
         hashtag: res.data.posts.hashtags,
         user: this.state.category,
       });
-console.log(this.state.hashtag);
-    
+      console.log(this.state.hashtag);
     });
   };
   render() {
     return (
       <div>
         <Header />
-
         <section class="main-content mt-3">
           <div class="container-xl">
             <nav aria-label="breadcrumb">
@@ -114,13 +112,12 @@ console.log(this.state.hashtag);
                   <div class="post-bottom">
                     <div class="row d-flex align-items-center">
                       <div class="col-md-6 col-12 text-center text-md-start">
-                        {this.state.hashtag.length > 0 && this.state.hashtag.map((ele,index)=>(
-
-                          <a href="#" class="tag" key={index}>
-                          {ele.hashtag}
-                        </a>
+                        {this.state.hashtag.length > 0 &&
+                          this.state.hashtag.map((ele, index) => (
+                            <a href="#" class="tag" key={index}>
+                              {ele.hashtag}
+                            </a>
                           ))}
-                     
                       </div>
                       <div class="col-md-6 col-12">
                         <ul

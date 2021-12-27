@@ -10,7 +10,7 @@ import Crousel from "./component/Crousel";
 import Posts from "./component/Posts";
 import Feed from "./component/Feed";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
-import SinglePost from "./component/Singlepost";
+import getCategory from "./component/getCategory";
 import Singlepost from "./component/Singlepost";
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
         <Route path="/Header" exact component={Header} />
         <Route path="/Crousel" exact component={Crousel} />
         <Route path="/Posts" exact component={Posts} />
+        <Route path="/getCategory/:id" exact component={getCategory} />
 
         <Route path="/SinglePost/:id" exact component={Singlepost} />
 

@@ -5,6 +5,7 @@ import wave from "../images/wave.svg";
 import ads from "../images/ads/ad-360.png";
 import { gethomePost } from "../api/postApi";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 class Sidebar extends Component {
   constructor(props) {
@@ -131,7 +132,7 @@ class Sidebar extends Component {
                 this.state.categories.map((ele, index) => (
                   <ul class="list">
                     <li>
-                      <a href="#">{ele.cat_title}</a>
+                      <Link to={`/getCategory/${ele.id}`}>{ele.cat_title}</Link>
                       <span>({ele.total_posts})</span>
                     </li>
                   </ul>

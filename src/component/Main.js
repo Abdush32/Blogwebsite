@@ -28,6 +28,7 @@ import Posts from "./Posts";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Feed from "./Feed";
+import { connect } from "react-redux";
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +47,7 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
+    console.log(this.props);
     gethomePost().then((res) => {
       console.log(res);
       this.setState({ loader: false });
@@ -129,5 +131,8 @@ class Main extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  user:state.authReducer
+});
 
-export default Main;
+export default connect(mapStateToProps)(Main);

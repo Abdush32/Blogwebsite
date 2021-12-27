@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { login } from "../api/register";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { connect } from "react-redux";
+import { loginAction } from "../redux/authAction";
 
 class Signin extends Component {
   constructor(props) {
@@ -32,6 +34,14 @@ class Signin extends Component {
           profile_pic: res.data.profile_pic,
           token: res.data.token,
         };
+        this.props.loginAction(
+          res.data.user_id,
+          res.data.email,
+          res.data.mobile,
+          res.data.name,
+          res.data.profile_pic,
+          res.data.token
+        );
 
         localStorage.setItem("data", JSON.stringify(userdata));
 
@@ -133,5 +143,12 @@ class Signin extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+});
 
-export default Signin;
+const mapDispatchToProps = (dispatch) => ({
+  loginAction: (token) =>
+    dispatch(loginAction(token))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Signin);
