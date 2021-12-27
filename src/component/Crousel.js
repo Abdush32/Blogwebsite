@@ -3,6 +3,7 @@ import { Spinner } from "reactstrap";
 import { Carousel } from "react-bootstrap";
 import moment from "moment";
 import { gethomePost } from "../api/postApi";
+import { Link } from "react-router-dom";
 class Crousel extends Component {
   constructor(props) {
     super(props);
@@ -42,12 +43,12 @@ class Crousel extends Component {
                           this.state.mainPost.map((ele, index) => (
                             <Carousel.Item key={index}>
                               <div class="details clearfix">
-                                <a
-                                  href="category.html"
+                                <Link
+                                  to={`/getCategory/${ele.category_id}`}
                                   class="category-badge lg"
                                 >
                                   {ele.category_title}
-                                </a>
+                                </Link>
                               </div>
                               <img
                                 className="d-block w-100"

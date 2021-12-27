@@ -78,12 +78,12 @@ class getCategory extends Component {
                         key={index}
                       >
                         <div class="thumb top-rounded">
-                          <a
-                            href="category.html"
+                          <Link
+                           to={`/getCategory/${ele.category.id}`}
                             class="category-badge lg position-absolute"
                           >
                             {ele.category.cat_title}
-                          </a>
+                          </Link>
                           <span class="post-format">
                             <i class="fa fa-picture-o" aria-hidden="true"></i>
                           </span>

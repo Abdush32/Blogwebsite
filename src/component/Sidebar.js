@@ -176,12 +176,12 @@ class Sidebar extends Component {
                   this.state.celebration_posts.map((ele, index) => (
                     <div class="post post-carousel" key={index}>
                       <div class="thumb rounded">
-                        <a
-                          href="category.html"
+                        <Link
+                          to={`/getCategory/${ele.category_id}`}
                           class="category-badge position-absolute"
                         >
                           {ele.category_title}
-                        </a>
+                        </Link>
                         <a href="blog-single.html">
                           <div class="inner">
                             <img
