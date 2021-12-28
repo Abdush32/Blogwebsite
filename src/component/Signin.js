@@ -42,7 +42,7 @@ class Signin extends Component {
           res.data.profile_pic,
           res.data.token
         );
-
+        
         localStorage.setItem("data", JSON.stringify(userdata));
 
         this.props.history.push("/");
@@ -143,12 +143,10 @@ class Signin extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  loginAction: (token) =>
-    dispatch(loginAction(token))
-})
+  loginAction: (token) => dispatch(loginAction(token)),
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Signin);
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

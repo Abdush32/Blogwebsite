@@ -21,6 +21,7 @@ class SinglePost extends Component {
       profile_pic: null,
       created_at: "",
       hashtag: [],
+      comment: [],
     };
   }
   componentDidMount = () => {
@@ -37,8 +38,9 @@ class SinglePost extends Component {
         created_at: res.data.posts.created_at,
         hashtag: res.data.posts.hashtags,
         user: this.state.category,
+        comment: res.data.posts.comments,
       });
-      console.log(this.state.hashtag);
+      console.log(this.state.comment);
     });
   };
   render() {
@@ -163,8 +165,118 @@ class SinglePost extends Component {
                     </div>
                   </div>
                 </div>
-
                 <div class="spacer" data-height="50"></div>
+
+                <div class="section-header">
+                  <h3 class="section-title">Comments (3)</h3>
+                  <img src="images/wave.svg" class="wave" alt="wave" />
+                </div>
+{this.state.comment.length > 0 && this.state.comment.map((ele,index)=>(
+
+
+                <div class="comments bordered padding-30 rounded">
+                  <ul class="comments">
+                    <li class="comment rounded">
+                      <div class="thumb">
+                        <img src={`https://blogmitiz.readandfeel.in/assets/${this.state.user_profile}`} alt="John Doe"
+                         style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "40px",
+                        }}
+                        />
+                      </div>
+                      <div class="details">
+                        <h4 class="name">
+                          <a href="#">{ele.user_name}</a>
+                        </h4>
+                        <span class="date"> {moment(ele.created_at).format("Do MMM YY")}</span>
+                        <p>
+                         {ele.comment_text}
+                        </p>
+                        <a href="#" class="btn btn-default btn-sm">
+                          Reply
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                ))}
+                <div class="spacer" data-height="50"></div>
+                <div class="section-header">
+                  <h3 class="section-title">Leave Comment</h3>
+                  <img src="images/wave.svg" class="wave" alt="wave" />
+                </div>
+
+                <div class="comment-form rounded bordered padding-30">
+                  <form id="comment-form" class="comment-form" method="post">
+                    <div class="messages"></div>
+
+                    <div class="row">
+                      <div class="column col-md-12">
+                        <div class="form-group">
+                          <textarea
+                            name="InputComment"
+                            id="InputComment"
+                            class="form-control"
+                            rows="4"
+                            placeholder="Your comment here..."
+                            required="required"
+                          ></textarea>
+                        </div>
+                      </div>
+
+                      <div class="column col-md-6">
+                        <div class="form-group">
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="InputEmail"
+                            name="InputEmail"
+                            placeholder="Email address"
+                            required="required"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="column col-md-6">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="InputWeb"
+                            id="InputWeb"
+                            placeholder="Website"
+                            required="required"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="column col-md-12">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="InputName"
+                            name="InputName"
+                            placeholder="Your name"
+                            required="required"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      name="submit"
+                      id="submit"
+                      value="Submit"
+                      class="btn btn-default"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                </div>
 
                 <div class="about-author padding-30 rounded">
                   <div class="thumb">

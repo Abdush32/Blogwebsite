@@ -3,7 +3,6 @@ const authInitial = {
 };
 
 const authReducer = (state = authInitial, action) => {
-    console.log("AUTHREDUCER HELLO");
   switch (action.type) {
       case "LOGIN":
           return {
