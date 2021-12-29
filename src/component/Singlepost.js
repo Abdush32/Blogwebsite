@@ -7,6 +7,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import wave from "../images/wave.svg";
+import { Link } from "react-router-dom";
 
 class SinglePost extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class SinglePost extends Component {
       created_at: "",
       hashtag: [],
       comment: [],
+      replies: [],
     };
   }
   componentDidMount = () => {
@@ -118,14 +120,13 @@ class SinglePost extends Component {
                         {this.state.hashtag.length > 0 &&
                           this.state.hashtag.map((ele, index) => (
                             <a href="#" class="tag" key={index}>
-                              {ele.hashtag}
+                              #{ele.hashtag}
                             </a>
                           ))}
                       </div>
                       <div class="col-md-6 col-12">
                         <ul
-                          class="
-                    social-icons
+                          class="social-icons
                     list-unstyled list-inline
                     mb-0
                     float-md-end
@@ -172,7 +173,7 @@ class SinglePost extends Component {
                   <h3 class="section-title">Comments</h3>
                   <img src={wave} class="wave" alt="wave" />
                 </div>
-                {this.state.comment.length > 0 ?
+                {this.state.comment.length > 0 ? (
                   this.state.comment.map((ele, index) => (
                     <div
                       class="comments bordered padding-30 rounded"
@@ -194,20 +195,35 @@ class SinglePost extends Component {
                           <div class="details">
                             <h4 class="name">
                               <a href="#">{ele.user_name}</a>
+                              <a href="#">{ele.replies.text}</a>
                             </h4>
                             <span class="date">
                               {" "}
                               {moment(ele.created_at).format("Do MMM YY")}
                             </span>
                             <p>{ele.comment_text}</p>
-                            <a href="#" class="btn btn-default btn-sm">
+                            <Link to="#" class="btn btn-default btn-sm">
                               Reply
-                            </a>
+                            </Link>
+                            {ele.replies.map((ele, index) => (
+                              <div class="details" key={index}>
+                                <h4 class="name">
+                                  <a href="#">{ele.text}</a>
+                                </h4>
+                                <span class="date">
+                                  {" "}
+                                  {moment(ele.created_at).format("Do MMM YY")}
+                                </span>
+                              </div>
+                            ))}
                           </div>
                         </li>
                       </ul>
                     </div>
-                  )): (<div>no Data found</div>)}
+                  ))
+                ) : (
+                  <div>no Data found</div>
+                )}
                 <div class="spacer" data-height="50"></div>
                 <div class="section-header">
                   <h3 class="section-title">Leave Comment</h3>

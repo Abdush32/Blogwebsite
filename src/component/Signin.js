@@ -42,10 +42,11 @@ class Signin extends Component {
           res.data.profile_pic,
           res.data.token
         );
-        
-        localStorage.setItem("data", JSON.stringify(userdata));
 
+        // localStorage.setItem("data", JSON.stringify(userdata));
         this.props.history.push("/");
+       
+        
       } else {
         console.log("NOT");
         toast.error(res.message, {
