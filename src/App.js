@@ -13,6 +13,7 @@ import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import getCategory from "./component/getCategory";
 import Singlepost from "./component/Singlepost";
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,9 +25,7 @@ function App() {
         <Route path="/Crousel" exact component={Crousel} />
         <Route path="/Posts" exact component={Posts} />
         <Route path="/getCategory/:id" exact component={getCategory} />
-
         <Route path="/SinglePost/:id" exact component={Singlepost} />
-
         <Route path="/Feed" exact component={Feed} />
       </Switch>
     </BrowserRouter>

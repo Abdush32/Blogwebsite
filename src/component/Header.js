@@ -104,9 +104,9 @@ import "./style.css";
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="category.html">
+                          <Link class="nav-link" to="/Inspiration">
                             Inspiration
-                          </a>
+                          </Link>
                         </li>
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#">
