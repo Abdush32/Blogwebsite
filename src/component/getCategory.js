@@ -64,123 +64,127 @@ class getCategory extends Component {
           <section class="main-content">
             <div class="container-xl">
               <div class="row gy-4">
-         
                 <div class="col-lg-8">
-                {this.state.loader ? (
+                  {this.state.loader ? (
                     <Spinner
-                    children={false}
-                    class="spinner1"
-                     style={{ marginLeft: "500px" }}
-                     />
-                      ) : (
-                  <div class="row gy-4">
-                 
-                    {this.state.singlecategory.length > 0 &&
-                      this.state.singlecategory.map((ele, index) => (
-                        <div class="col-sm-6" key={index}>
-                          <div class="post post-grid rounded bordered">
-                            <div class="thumb top-rounded">
-                              <a
-                                href="category.html"
-                                class="category-badge position-absolute"
-                              >
-                                {ele.category.cat_title}
-                              </a>
-                              <span class="post-format">
-                                <i class="icon-picture"></i>
-                              </span>
-                              <a href="blog-single.html">
-                                <div class="inner">
-                                  <img
-                                    src={`https://blogmitiz.readandfeel.in/assets/${ele.post_thumbnail}`}
-                                    style={{ width: "350px", height: "250px" }}
-                                    alt="post-title"
-                                  />
-                                </div>
-                              </a>
-                            </div>
-                            <div class="details">
-                              <ul class="meta list-inline mb-0">
-                                <li class="list-inline-item">
-                                  <a href="#">
-                                    <img
-                                      src={`https://blogmitiz.readandfeel.in/assets/${ele.user.profile_pic}`}
-                                      class="author"
-                                      alt="author"
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        borderRadius: "40px",
-                                      }}
-                                    />
-                                    {ele.user_name}
-                                  </a>
-                                </li>
-                                <li class="list-inline-item">
-                                  {moment(ele.created_at).format("Do MMM YY")}
-                                </li>
-                              </ul>
-                              <h5 class="post-title mb-3 mt-3">
-                                <a href="blog-single.html">{ele.post_title}</a>
-                              </h5>
-                              <p class="excerpt mb-0">
-                                I am so happy, my dear friend, so absorbed in
-                                the exquisite sense of mere tranquil existence.
-                              </p>
-                            </div>
-                            <div class="post-bottom clearfix d-flex align-items-center">
-                              <div class="social-share me-auto">
-                                <button class="toggle-button icon-share"></button>
-                                <ul class="icons list-unstyled list-inline mb-0">
-                                  <li class="list-inline-item">
-                                    <a href="#">
-                                      <i class="fa fa-facebook"></i>
-                                    </a>
-                                  </li>
-                                  <li class="list-inline-item">
-                                    <a href="#">
-                                      <i class="fab fa-twitter"></i>
-                                    </a>
-                                  </li>
-                                  <li class="list-inline-item">
-                                    <a href="#">
-                                      <i class="fab fa-linkedin-in"></i>
-                                    </a>
-                                  </li>
-                                  <li class="list-inline-item">
-                                    <a href="#">
-                                      <i class="fab fa-pinterest"></i>
-                                    </a>
-                                  </li>
-                                  <li class="list-inline-item">
-                                    <a href="#">
-                                      <i class="fab fa-telegram-plane"></i>
-                                    </a>
-                                  </li>
-                                  <li class="list-inline-item">
-                                    <a href="#">
-                                      <i class="far fa-envelope"></i>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="more-button float-end">
+                      children={false}
+                      class="spinner1"
+                      style={{ marginLeft: "500px" }}
+                    />
+                  ) : (
+                    <div class="row gy-4">
+                      {this.state.singlecategory.length > 0 &&
+                        this.state.singlecategory.map((ele, index) => (
+                          <div class="col-sm-6" key={index}>
+                            <div class="post post-grid rounded bordered">
+                              <div class="thumb top-rounded">
+                                <a
+                                  href="category.html"
+                                  class="category-badge position-absolute"
+                                >
+                                  {ele.category.cat_title}
+                                </a>
+                                <span class="post-format">
+                                  <i class="fa fa-picture-o"></i>
+                                </span>
                                 <a href="blog-single.html">
-                                  <span class="icon-options"></span>
+                                  <div class="inner">
+                                    <img
+                                      src={`https://blogmitiz.readandfeel.in/assets/${ele.post_thumbnail}`}
+                                      style={{
+                                        width: "350px",
+                                        height: "250px",
+                                      }}
+                                      alt="post-title"
+                                    />
+                                  </div>
                                 </a>
                               </div>
+                              <div class="details">
+                                <ul class="meta list-inline mb-0">
+                                  <li class="list-inline-item">
+                                    <a href="#">
+                                      <img
+                                        src={`https://blogmitiz.readandfeel.in/assets/${ele.user.profile_pic}`}
+                                        class="author"
+                                        alt="author"
+                                        style={{
+                                          width: "50px",
+                                          height: "50px",
+                                          borderRadius: "40px",
+                                        }}
+                                      />
+                                      {ele.user_name}
+                                    </a>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    {moment(ele.created_at).format("Do MMM YY")}
+                                  </li>
+                                </ul>
+                                <h5 class="post-title mb-3 mt-3">
+                                  <a href="blog-single.html">
+                                    {ele.post_title}
+                                  </a>
+                                </h5>
+                                <p class="excerpt mb-0">
+                                  I am so happy, my dear friend, so absorbed in
+                                  the exquisite sense of mere tranquil
+                                  existence.
+                                </p>
+                              </div>
+                              <div class="post-bottom clearfix d-flex align-items-center">
+                                <div class="fa fa-share-alt me-auto">
+                                  <button class="toggle-button icon-share"></button>
+                                  <ul class="icons list-unstyled list-inline mb-0">
+                                    <li class="list-inline-item">
+                                      <a href="#">
+                                        <i class="fab fa-facebook-f"></i>
+                                      </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                      <a href="#">
+                                        <i class="fa fa-twitter"></i>
+                                      </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                      <a href="#">
+                                        <i class="fa fa-linkedin-in"></i>
+                                      </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                      <a href="#">
+                                        <i class="fa fa-pinterest"></i>
+                                      </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                      <a href="#">
+                                        <i class="fa fa-telegram-plane"></i>
+                                      </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                      <a href="#">
+                                        <i class="fa fa-envelope"></i>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="more-button float-end">
+                                  <a href="blog-single.html">
+                                    <span class="icon-options"></span>
+                                  </a>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          </div>
-                          ))}
-                  </div>
-                )}
+                        ))}
+                    </div>
+                  )}
                 </div>
                 <div class="col-lg-4">
                   <Sidebar />
                 </div>
                 <Feed />
-                )
+
                 <Footer />
               </div>
             </div>

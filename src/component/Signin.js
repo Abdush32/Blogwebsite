@@ -43,7 +43,7 @@ class Signin extends Component {
           res.data.token
         );
 
-        // localStorage.setItem("data", JSON.stringify(userdata));
+        localStorage.setItem("data", JSON.stringify(userdata));
         this.props.history.push("/");
        
         
